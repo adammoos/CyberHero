@@ -393,6 +393,11 @@ export function GameScene({
           moveVector.z += joystickDirection.y;
         }
 
+        // Debug: log moveVector and joystick
+        if (joystickActive && (joystickDirection.x !== 0 || joystickDirection.y !== 0)) {
+          console.log('moveVector', moveVector, 'joystickDirection', joystickDirection);
+        }
+
         if (moveVector.length() > 0) {
           moveVector.normalize().multiplyScalar(speed);
           playerRef.current.position.add(moveVector);
@@ -465,7 +470,7 @@ export function GameScene({
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [currentLevel, isFalling]);
+  }, [currentLevel, isFalling, joystickActive, joystickDirection]);
 
   // Reset player position
   useEffect(() => {
