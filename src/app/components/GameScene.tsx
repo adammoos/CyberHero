@@ -493,6 +493,8 @@ export function GameScene({
             const deltaX = (touch.clientX - centerX) / (rect.width / 2);
             const deltaY = (touch.clientY - centerY) / (rect.height / 2);
             joystickDirection.current.set(deltaX, deltaY);
+            // Debug output
+            console.log('TouchStart', { deltaX, deltaY });
           }}
           onTouchMove={(e) => {
             if (!joystickActive) return;
@@ -506,15 +508,23 @@ export function GameScene({
               Math.max(-1, Math.min(1, deltaX)),
               Math.max(-1, Math.min(1, deltaY))
             );
+            // Debug output
+            console.log('TouchMove', { deltaX, deltaY });
           }}
           onTouchEnd={() => {
             setJoystickActive(false);
             joystickDirection.current.set(0, 0);
+            // Debug output
+            console.log('TouchEnd');
           }}
         >
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-cyan-500/50 pointer-events-none" />
         </div>
         <div className="text-cyan-400 text-xs text-center mt-2">MOVE</div>
+        {/* Debug joystick direction */}
+        <div className="text-cyan-400 text-xs mt-2">
+          Joystick: {joystickDirection.current.x.toFixed(2)}, {joystickDirection.current.y.toFixed(2)}
+        </div>
       </div>
 
       {/* Jump button (optional) */}
