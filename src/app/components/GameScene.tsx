@@ -378,7 +378,11 @@ export function GameScene({
       animationId = requestAnimationFrame(animate);
 
       if (playerRef.current && !isFalling) {
-        const speed = 0.15;
+        // Use higher speed for mobile/joystick
+        let speed = 0.15;
+        if (joystickActive && (joystickDirection.x !== 0 || joystickDirection.y !== 0)) {
+          speed = 0.35; // Increase speed for joystick/mobile
+        }
         const moveVector = new THREE.Vector3();
 
         // Keyboard input
