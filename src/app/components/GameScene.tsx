@@ -29,7 +29,7 @@ export function GameScene({
   const keysPressed = useRef<{ [key: string]: boolean }>({});
   const velocityRef = useRef(new THREE.Vector3());
   const [joystickActive, setJoystickActive] = useState(false);
-  const joystickDirection = useRef(new THREE.Vector2());
+  const [joystickDirection, setJoystickDirection] = useState(() => new THREE.Vector2());
   const playerGroupRef = useRef<THREE.Group | null>(null);
   const walkAnimationRef = useRef(0);
   const leftLegRef = useRef<THREE.Mesh | null>(null);
@@ -389,8 +389,8 @@ export function GameScene({
 
         // Joystick input
         if (joystickActive) {
-          moveVector.x += joystickDirection.current.x;
-          moveVector.z += joystickDirection.current.y;
+          moveVector.x += joystickDirection.x;
+          moveVector.z += joystickDirection.y;
         }
 
         if (moveVector.length() > 0) {
@@ -492,7 +492,7 @@ export function GameScene({
             const centerY = rect.top + rect.height / 2;
             const deltaX = (touch.clientX - centerX) / (rect.width / 2);
             const deltaY = (touch.clientY - centerY) / (rect.height / 2);
-            joystickDirection.current.set(deltaX, deltaY);
+            setJoystickDirection(new THREE.Vector2(deltaX, deltaY));
             // Debug output
             console.log('TouchStart', { deltaX, deltaY });
           }}
@@ -504,16 +504,16 @@ export function GameScene({
             const centerY = rect.top + rect.height / 2;
             const deltaX = (touch.clientX - centerX) / (rect.width / 2);
             const deltaY = (touch.clientY - centerY) / (rect.height / 2);
-            joystickDirection.current.set(
+            setJoystickDirection(new THREE.Vector2(
               Math.max(-1, Math.min(1, deltaX)),
               Math.max(-1, Math.min(1, deltaY))
-            );
+            ));
             // Debug output
             console.log('TouchMove', { deltaX, deltaY });
           }}
           onTouchEnd={() => {
             setJoystickActive(false);
-            joystickDirection.current.set(0, 0);
+            setJoystickDirection(new THREE.Vector2(0, 0));
             // Debug output
             console.log('TouchEnd');
           }}
@@ -523,16 +523,11 @@ export function GameScene({
         <div className="text-cyan-400 text-xs text-center mt-2">MOVE</div>
         {/* Debug joystick direction */}
         <div className="text-cyan-400 text-xs mt-2">
-          Joystick: {joystickDirection.current.x.toFixed(2)}, {joystickDirection.current.y.toFixed(2)}
+          Joystick: {joystickDirection.x.toFixed(2)}, {joystickDirection.y.toFixed(2)}
         </div>
       </div>
 
-      {/* Jump button (optional) */}
-      <div className="absolute bottom-8 right-8 md:hidden">
-        <button className="w-20 h-20 rounded-full bg-cyan-500/20 border-2 border-cyan-500/50 text-cyan-400 font-bold">
-          JUMP
-        </button>
-      </div>
+
     </div>
   );
 }
