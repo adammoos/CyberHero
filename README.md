@@ -426,7 +426,7 @@ npx imagemin src/assets -o src/assets
 ## 📞 Support
 
 **Author:** Mohammed Adam Mejri  
-**Website:** [Live Demo](https://cyberhero.vercel.app/)  
+**Website:** [Live Demo](https://cyber-hero-coral.vercel.app)
 **GitHub:** [adammoos](https://github.com/adammoos)  
 **LinkedIn:** [Mohammed Adam Mejri](https://www.linkedin.com/in/mohammed-adam-mejri-259124404/)
 
